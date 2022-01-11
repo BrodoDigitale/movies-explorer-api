@@ -27,18 +27,34 @@ module.exports.deleteMovie = (req, res, next) => {
 };
 
 module.exports.createMovie = (req, res, next) => {
-  Movie.create(
-    req.body.country,
-    req.body.director,
-    req.body.duration,
-    req.body.year,
-    req.body.description,
-    req.body.image,
-    req.body.trailer,
-    req.body.nameRU,
-    req.body.nameEN,
-    req.body.thumbnail,
-  )
+  const owner = req.user._id;
+  const {
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailer,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
+  } = req.body;
+  Movie.create({
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailer,
+    nameRU,
+    nameEN,
+    thumbnail,
+    owner,
+    movieId,
+  })
     .then((movie) => res.status(200).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {

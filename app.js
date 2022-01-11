@@ -5,11 +5,13 @@ const mongoose = require('mongoose');
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
 const auth = require('./middlewares/auth');
+const corsValidator = require('./middlewares/cors-validator');
 const { login } = require('./controllers/login');
 const { createUser } = require('./controllers/users');
 const usersRoutes = require('./routes/users');
 const moviesRoutes = require('./routes/movies');
 const NotFoundError = require('./errors/not-found-err');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 
@@ -24,6 +26,11 @@ app.use(express.urlencoded({ extended: true }));
 mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
   useNewUrlParser: true,
 });
+// логгер запросов
+app.use(requestLogger);
+// логгер ошибок (! до обработчиков ошибок)
+app.use(errorLogger);
+app.use(corsValidator);
 // рутинг
 
 // логин
