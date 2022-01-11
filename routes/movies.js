@@ -9,7 +9,7 @@ const {
   deleteMovie,
 } = require('../controllers/movies');
 
-router.get('/movies', getMovies);
+router.get('/', getMovies);
 router.delete('/:movieId', celebrate({
   params: Joi.object().keys({
     movieId: Joi.string().alphanum().length(24),
@@ -21,7 +21,7 @@ router.post('/', celebrate(
       country: Joi.string().required().min(2),
       director: Joi.string().required().min(2),
       duration: Joi.number().required(),
-      year: Joi.number().required().length(4),
+      year: Joi.number().required(),
       description: Joi.string(),
       image: Joi.string().required().custom((value) => {
         if (!validator.isURL(value, { require_protocol: true })) {

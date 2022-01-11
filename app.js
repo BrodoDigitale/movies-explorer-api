@@ -1,10 +1,10 @@
 const express = require('express');
-// const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
-// const auth = require('./middlewares/auth');
+const auth = require('./middlewares/auth');
 const { login } = require('./controllers/login');
 const { createUser } = require('./controllers/users');
 const usersRoutes = require('./routes/users');
@@ -25,6 +25,8 @@ mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
   useNewUrlParser: true,
 });
 // рутинг
+
+// логин
 app.post('/signin', celebrate(
   {
     body: Joi.object().keys({
@@ -33,6 +35,8 @@ app.post('/signin', celebrate(
     }),
   },
 ), login);
+
+// регистрация
 app.post('/signup', celebrate(
   {
     body: Joi.object().keys({
@@ -42,8 +46,10 @@ app.post('/signup', celebrate(
     }),
   },
 ), createUser);
+
 // авторизация
-// app.use(auth);
+app.use(auth);
+
 // роуты, защищённые авторизацией
 app.use('/users', usersRoutes);
 app.use('/movies', moviesRoutes);
@@ -62,7 +68,7 @@ app.use((err, req, res, next) => {
     res.status(500).send({ message: `На сервере произошла ошибка ${err.name}: ${err.message}` });
     return;
   }
-  res.status(err.statusCode).send({ message: err.message });
+  res.status(err.statusCode || 500).send({ message: err.message });
 });
 
 app.listen(PORT, () => {
