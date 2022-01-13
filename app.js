@@ -6,8 +6,8 @@ const { errors } = require('celebrate');
 const corsValidator = require('./middlewares/cors-validator');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/index');
+const { DATABASE, PORT } = require('./utils/config');
 
-const { PORT = 3001 } = process.env;
 const app = express();
 app.use(cookieParser());
 
@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // подключение к серверу mongo
-mongoose.connect('mongodb://localhost:27017/moviesdb', {
+mongoose.connect(DATABASE, {
   useNewUrlParser: true,
 });
 // рутинг

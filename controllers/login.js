@@ -1,9 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-
-const { NODE_ENV, JWT_SECRET } = process.env;
-
-const SECRET_KEY_DEV = 'fc3dc3850a743218568b5738df1d608128f7840ed98c6d8ca78691c6947f75a0';
+const { NODE_ENV, SECRET_KEY_DEV, JWT_SECRET } = require('../utils/config');
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
@@ -14,12 +11,10 @@ const login = (req, res, next) => {
         NODE_ENV === 'production' ? JWT_SECRET : SECRET_KEY_DEV,
         { expiresIn: '7d' },
       );
+      console.log(NODE_ENV, SECRET_KEY_DEV, JWT_SECRET);
       res.send({ message: 'Вы успешно авторизованы', token });
     })
     .catch(next);
 };
 
-module.exports = {
-  SECRET_KEY_DEV,
-  login,
-};
+module.exports = { login };
