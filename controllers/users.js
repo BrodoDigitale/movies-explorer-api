@@ -33,7 +33,7 @@ module.exports.createUser = (req, res, next) => {
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(new NotFoundError('Запрашиваемый пользователь не найден'))
-    .then((user) => res.status(200).send(user))
+    .then((user) => res.status(200).send({ name: user.name, email: user.email }))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new InvalidDataError('Невалидный id'));
@@ -45,7 +45,7 @@ module.exports.getCurrentUser = (req, res, next) => {
 module.exports.updateProfile = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, req.body, { new: true, runValidators: true })
     .orFail(new NotFoundError('Запрашиваемый пользователь не найден'))
-    .then((user) => res.status(200).send(user))
+    .then((user) => res.status(200).send({ name: user.name, email: user.email }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new InvalidDataError('Введены некорректные данные'));

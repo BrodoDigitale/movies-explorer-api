@@ -1,2 +1,6 @@
 # movies-explorer-api
-Backend repository for Yandex Practicum diploma project 
+Репозиторий для бэкенда дипломного проекта факультета веб-разработки Яндекс Практикум
+
+Бэкенд проекта размещен здесь: https://sensi.movies.api.nomoredomains.rocks
+
+IP адрес сервера: 51.250.13.149
