@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Бэкенд для сервиса Movies Explorer
 
 Дипломный проект факультета веб-разработки Яндекс Практикум
@@ -16,5 +17,11 @@
 
 Бэкенд размещен здесь: https://sensi.movies.api.nomoredomains.rocks
 IP адрес сервера: 51.250.13.149
+=======
+# movies-explorer-api
+Репозиторий для бэкенда дипломного проекта факультета веб-разработки Яндекс Практикум
 
-Автор Юлия Сенси
+Бэкенд проекта размещен здесь: https://sensi.movies.api.nomoredomains.rocks
+>>>>>>> parent of 0bdb6dc (refactor: extend readme description)
+
+IP адрес сервера: 51.250.13.149

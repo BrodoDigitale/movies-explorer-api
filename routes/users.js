@@ -9,7 +9,6 @@ const {
 } = require('../controllers/users');
 
 router.get('/me', getCurrentUser);
-
 router.patch('/me', celebrate(
   {
     body: Joi.object().keys({
