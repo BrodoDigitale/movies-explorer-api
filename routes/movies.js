@@ -9,13 +9,13 @@ const {
   deleteMovie,
 } = require('../controllers/movies');
 
-router.get('/', getMovies);
-router.delete('/:movieId', celebrate({
+router.get('/movies', getMovies);
+router.delete('movies/:movieId', celebrate({
   params: Joi.object().keys({
     movieId: Joi.string().alphanum().length(24),
   }),
 }), deleteMovie);
-router.post('/', celebrate(
+router.post('/movies', celebrate(
   {
     body: Joi.object().keys({
       country: Joi.string().required().min(2),

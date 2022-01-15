@@ -11,7 +11,6 @@ const login = (req, res, next) => {
         NODE_ENV === 'production' ? JWT_SECRET : SECRET_KEY_DEV,
         { expiresIn: '7d' },
       );
-      console.log(NODE_ENV, SECRET_KEY_DEV, JWT_SECRET);
       res.send({ message: 'Вы успешно авторизованы', token });
     })
     .catch(next);

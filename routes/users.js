@@ -8,8 +8,8 @@ const {
   updateProfile,
 } = require('../controllers/users');
 
-router.get('/me', getCurrentUser);
-router.patch('/me', celebrate(
+router.get('/users/me', getCurrentUser);
+router.patch('/users/me', celebrate(
   {
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30),
