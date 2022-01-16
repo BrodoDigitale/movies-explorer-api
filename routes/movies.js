@@ -1,7 +1,5 @@
 const router = require('express').Router();
-const { celebrate, Joi } = require('celebrate');
-const validator = require('validator');
-const InvalidDataError = require('../errors/invalid-data-err');
+const { createMovieValidation, deleteMovieValidation } = require('../middlewares/validation');
 
 const {
   getMovies,
@@ -10,41 +8,7 @@ const {
 } = require('../controllers/movies');
 
 router.get('/movies', getMovies);
-router.delete('movies/:movieId', celebrate({
-  params: Joi.object().keys({
-    movieId: Joi.string().alphanum().length(24),
-  }),
-}), deleteMovie);
-router.post('/movies', celebrate(
-  {
-    body: Joi.object().keys({
-      country: Joi.string().required().min(2),
-      director: Joi.string().required().min(2),
-      duration: Joi.number().required(),
-      year: Joi.number().required(),
-      description: Joi.string(),
-      image: Joi.string().required().custom((value) => {
-        if (!validator.isURL(value, { require_protocol: true })) {
-          throw new InvalidDataError('Поле не является ссылкой');
-        }
-        return value;
-      }),
-      trailer: Joi.string().required().custom((value) => {
-        if (!validator.isURL(value, { require_protocol: true })) {
-          throw new InvalidDataError('Поле не является ссылкой');
-        }
-        return value;
-      }),
-      thumbnail: Joi.string().required().custom((value) => {
-        if (!validator.isURL(value, { require_protocol: true })) {
-          throw new InvalidDataError('Поле не является ссылкой');
-        }
-        return value;
-      }),
-      nameRU: Joi.string().required().min(2).max(30),
-      nameEN: Joi.string().required().min(2).max(30),
-    }),
-  },
-), createMovie);
+router.delete('/movies/:movieId', deleteMovieValidation, deleteMovie);
+router.post('/movies', createMovieValidation, createMovie);
 
 module.exports = router;
