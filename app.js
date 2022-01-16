@@ -3,6 +3,7 @@ require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+const errorsHandler = require('./middlewares/errors-handler');
 const corsValidator = require('./middlewares/cors-validator');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/index');
@@ -25,22 +26,16 @@ app.use(router);
 // логгер запросов
 app.use(requestLogger);
 
-// логгер ошибок (! до обработчиков ошибок)
+// логгер ошибок
 app.use(errorLogger);
+
 app.use(corsValidator);
 
 // обработка ошибок celebrate
 app.use(errors());
 
 // централизованный обработчик ошибок
-
-app.use((err, req, res, next) => {
-  if (err.statusCode === 500) {
-    res.status(500).send({ message: `На сервере произошла ошибка ${err.name}: ${err.message}` });
-    return;
-  }
-  res.status(err.statusCode || 500).send({ message: `Произошла ошибка: ${err.message}` });
-});
+app.use(errorsHandler);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
