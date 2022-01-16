@@ -16,8 +16,8 @@ module.exports.deleteMovie = (req, res, next) => {
     .orFail(new NotFoundError('Фильм не найден'))
     .then((movie) => {
       if (req.user._id.toString() === movie.owner.toString()) {
-        movie.delete();
-        res.status(200).send({ message: 'Фильм удален' });
+        return movie.delete()
+          .then(() => res.status(200).send({ message: 'Фильм удален' }));
       }
       throw new AccessDeniedError('Фильм может удалить только владелец');
     })
