@@ -2,10 +2,18 @@ const Movie = require('../models/movie');
 const NotFoundError = require('../errors/not-found-err');
 const InvalidDataError = require('../errors/invalid-data-err');
 const AccessDeniedError = require('../errors/forbidden-err');
+const {
+  moviesNotFound,
+  movieNotFound,
+  movieDelSuccess,
+  movieDeletionIsForbidden,
+  invalidData,
+  invalidId,
+} = require('../utils/errors-and-messages');
 
 module.exports.getMovies = (req, res, next) => {
   Movie.find({})
-    .orFail(new NotFoundError('Фильмы не найдены'))
+    .orFail(new NotFoundError(moviesNotFound))
     .then((movies) => res.status(200).send(movies))
     .catch(next);
 };
@@ -13,17 +21,17 @@ module.exports.getMovies = (req, res, next) => {
 module.exports.deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
   Movie.findById(movieId)
-    .orFail(new NotFoundError('Фильм не найден'))
+    .orFail(new NotFoundError(movieNotFound))
     .then((movie) => {
       if (req.user._id.toString() === movie.owner.toString()) {
         return movie.delete()
-          .then(() => res.status(200).send({ message: 'Фильм удален' }));
+          .then(() => res.status(200).send({ message: movieDelSuccess }));
       }
-      throw new AccessDeniedError('Фильм может удалить только владелец');
+      throw new AccessDeniedError(movieDeletionIsForbidden);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new InvalidDataError('Невалидный id'));
+        next(new InvalidDataError(invalidId));
       }
       next(err);
     });
@@ -61,7 +69,7 @@ module.exports.createMovie = (req, res, next) => {
     .then((movie) => res.status(200).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new InvalidDataError('Введены некорректные данные'));
+        next(new InvalidDataError(invalidData));
       }
       next(err);
     });

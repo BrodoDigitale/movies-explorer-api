@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { NODE_ENV, SECRET_KEY_DEV, JWT_SECRET } = require('../utils/config');
+const { authSuccess } = require('../utils/errors-and-messages');
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
@@ -11,7 +12,7 @@ const login = (req, res, next) => {
         NODE_ENV === 'production' ? JWT_SECRET : SECRET_KEY_DEV,
         { expiresIn: '7d' },
       );
-      res.send({ message: 'Вы успешно авторизованы', token });
+      res.send({ message: authSuccess, token });
     })
     .catch(next);
 };
