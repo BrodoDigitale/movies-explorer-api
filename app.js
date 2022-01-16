@@ -39,7 +39,7 @@ app.use((err, req, res, next) => {
     res.status(500).send({ message: `На сервере произошла ошибка ${err.name}: ${err.message}` });
     return;
   }
-  res.status(err.statusCode || 500).send({ message: err.message });
+  res.status(err.statusCode || 500).send({ message: `Произошла ошибка: ${err.message}` });
 });
 
 app.listen(PORT, () => {

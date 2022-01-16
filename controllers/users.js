@@ -45,10 +45,14 @@ module.exports.getCurrentUser = (req, res, next) => {
 module.exports.updateProfile = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, req.body, { new: true, runValidators: true })
     .orFail(new NotFoundError('Запрашиваемый пользователь не найден'))
-    .then((user) => res.status(200).send({ name: user.name, email: user.email }))
+    .then((user) => {
+      res.send({ name: user.name, email: user.email });
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new InvalidDataError('Введены некорректные данные'));
+      } else if (err.name === 'MongoServerError') {
+        next(new DataBaseError('Данный емейл уже зарегистрирован'));
       }
       next(err);
     });

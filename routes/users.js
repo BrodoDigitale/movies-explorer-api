@@ -1,7 +1,5 @@
 const router = require('express').Router();
-const { celebrate, Joi } = require('celebrate');
-const validator = require('validator');
-const InvalidDataError = require('../errors/invalid-data-err');
+const { profileUpdateValidation } = require('../middlewares/validation');
 
 const {
   getCurrentUser,
@@ -9,19 +7,6 @@ const {
 } = require('../controllers/users');
 
 router.get('/users/me', getCurrentUser);
-router.patch('/users/me', celebrate(
-  {
-    body: Joi.object().keys({
-      name: Joi.string().min(2).max(30),
-      password: Joi.string().min(2).max(30),
-      email: Joi.string().custom((value) => {
-        if (!validator.isEmail(value, { require_protocol: true })) {
-          throw new InvalidDataError('Неккоректно введен емейл');
-        }
-        return value;
-      }),
-    }),
-  },
-), updateProfile);
+router.patch('/users/me', profileUpdateValidation, updateProfile);
 
 module.exports = router;

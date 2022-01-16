@@ -1,6 +1,6 @@
 const { celebrate, Joi } = require('celebrate');
 
-const signupValidation = celebrate(
+const signinValidation = celebrate(
   {
     body: Joi.object().keys({
       email: Joi.string().required().email(),
@@ -9,7 +9,7 @@ const signupValidation = celebrate(
   },
 );
 
-const signinValidation = celebrate(
+const signupValidation = celebrate(
   {
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30),
@@ -19,4 +19,13 @@ const signinValidation = celebrate(
   },
 );
 
-module.exports = { signupValidation, signinValidation };
+const profileUpdateValidation = celebrate(
+  {
+    body: Joi.object().keys({
+      name: Joi.string().required().min(2).max(30),
+      email: Joi.string().required().email(),
+    }),
+  },
+);
+
+module.exports = { signupValidation, signinValidation, profileUpdateValidation };
