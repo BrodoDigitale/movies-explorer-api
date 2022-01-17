@@ -24,6 +24,9 @@ app.use(express.urlencoded({ extended: true }));
 mongoose.connect(DATABASE, {
   useNewUrlParser: true,
 });
+
+app.use(corsValidator);
+
 // рутинг
 app.use(router);
 
@@ -32,8 +35,6 @@ app.use(requestLogger);
 
 // логгер ошибок
 app.use(errorLogger);
-
-app.use(corsValidator);
 
 // обработка ошибок celebrate
 app.use(errors());

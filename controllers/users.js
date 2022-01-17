@@ -7,17 +7,11 @@ const {
   userEmailConflict,
   userNotFound,
   invalidData,
-  invalidId,
 } = require('../utils/errors-and-messages');
 
 module.exports.createUser = (req, res, next) => {
   const { name, email, password } = req.body;
-  User.findOne({ email })
-    .then((user) => {
-      if (user) {
-        throw new DataBaseError(userEmailConflict);
-      } return bcrypt.hash(password, 10);
-    })
+  bcrypt.hash(password, 10)
     .then((hash) => User.create({
       name,
       email,
@@ -30,22 +24,21 @@ module.exports.createUser = (req, res, next) => {
     }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new InvalidDataError(invalidData));
+        throw new InvalidDataError(invalidData);
       }
-      next(err);
-    });
+      if (err.code === 11000) {
+        throw new DataBaseError(userEmailConflict);
+      }
+      return next(err);
+    })
+    .catch(next);
 };
 
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(new NotFoundError(userNotFound))
     .then((user) => res.status(200).send({ name: user.name, email: user.email }))
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new InvalidDataError(invalidId));
-      }
-      next(err);
-    });
+    .catch(next);
 };
 
 module.exports.updateProfile = (req, res, next) => {
@@ -56,10 +49,12 @@ module.exports.updateProfile = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new InvalidDataError(invalidData));
-      } else if (err.name === 'MongoServerError') {
-        next(new DataBaseError(userEmailConflict));
+        throw new InvalidDataError(invalidData);
       }
-      next(err);
-    });
+      if (err.code === 11000) {
+        throw new DataBaseError(userEmailConflict);
+      }
+      return next(err);
+    })
+    .catch(next);
 };
