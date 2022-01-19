@@ -1,2 +1,21 @@
-# movies-explorer-api
-Backend repository for Yandex Practicum diploma project 
+# Бэкенд для сервиса Movies Explorer
+
+**Дипломный проект факультета веб-разработки Яндекс Практикум**
+
+Описание: выполнена задача по созданию API.  Реализованы схемы и модели ресурсов API, роуты и контроллеры, авторизация, логирование. 
+
+## Стек 
++ Node.js
++ Express.js
++ NPM
++ Nginx
++ MongoDB
++ Mongoose
++ Ubuntu
++ Git
+
+Бэкенд размещен здесь: https://sensi.movies.api.nomoredomains.rocks
+
+IP адрес сервера: 51.250.13.149
+
+Автор Юлия Сенси
