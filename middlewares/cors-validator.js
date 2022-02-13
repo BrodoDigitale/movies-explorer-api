@@ -1,7 +1,7 @@
 // Массив доменов, с которых разрешены кросс-доменные запросы
 const allowedCors = [
-  'http://mesto.sensi.nomoredomains.rocks',
-  'https://mesto.sensi.nomoredomains.rocks',
+  'http://sensi.movies.nomoredomains.work',
+  'https://sensi.movies.nomoredomains.work',
   'http://localhost:3000',
   'https://localhost:3000',
 ];
