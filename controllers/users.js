@@ -37,7 +37,7 @@ module.exports.createUser = (req, res, next) => {
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(new NotFoundError(userNotFound))
-    .then((user) => res.status(200).send({ name: user.name, email: user.email }))
+    .then((user) => res.status(200).send(user))
     .catch(next);
 };
 
@@ -45,7 +45,7 @@ module.exports.updateProfile = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, req.body, { new: true, runValidators: true })
     .orFail(new NotFoundError(userNotFound))
     .then((user) => {
-      res.send({ name: user.name, email: user.email });
+      res.send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
