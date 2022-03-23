@@ -1,10 +1,12 @@
-# Бэкенд для сервиса Movies Explorer
+# Back-end for Movies Explorer Service
 
-**Дипломный проект факультета веб-разработки Яндекс Практикум**
+**Repository for back-end part of [Movies Explorer Project](https://github.com/BrodoDigitale/movies-explorer-frontend)**
 
-Описание: выполнена задача по созданию API.  Реализованы схемы и модели ресурсов API, роуты и контроллеры, авторизация, логирование. 
+This is a final project of @Yandex-Practicum web development path 
 
-## Стек 
+Performed tasks: creation of API, implementation of API schemas and models, routes and controllers, authorization of users, logging.
+
+## Tech Stack 
 + Node.js
 + Express.js
 + NPM
@@ -13,9 +15,18 @@
 + Mongoose
 + Ubuntu
 + Git
++ Helmet
 
-Бэкенд размещен здесь: https://sensi.movies.api.nomoredomains.rocks
+Back-end location: https://sensi.movies.api.nomoredomains.rocks
 
-IP адрес сервера: 51.250.15.65
+Server IP: 51.250.15.65
 
-Автор Юлия Сенси
+Server startup commands:
+
+`npm run start`
+
+or
+
+`npm run dev`
+
+
